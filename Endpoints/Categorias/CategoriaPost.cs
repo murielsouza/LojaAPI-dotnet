@@ -10,14 +10,10 @@ public class CategoriaPost //convenção: recurso  + metodo de acesso para cadas
     public static Delegate Handle => Action;
 
     public static IResult Action(CategoriaRequest categoriaRequest, ApplicationDbContext context) {
-        var categoria = new Categoria
-        {
-            Nome = categoriaRequest.Nome,
-            CriadoPor = "TEST",
-            CriadoEm = DateTime.Now,
-            EditadoPor = "TEST",
-            EditadoEm = DateTime.Now,
-};
+        var categoria = new Categoria(categoriaRequest.Nome, "TESTE", "TESTE");
+        if (!categoria.IsValid) {
+            return Results.BadRequest(categoria.Notifications);
+        }
         context.Categorias.Add(categoria);
         context.SaveChanges();
         return Results.Created($"/categorias/{categoria.Id}", categoria.Id);

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220504182914_AddCategoriaAndProdutoAndTag")]
+    [Migration("20220506161349_AddCategoriaAndProdutoAndTag")]
     partial class AddCategoriaAndProdutoAndTag
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,7 +127,7 @@ namespace LojaAPI.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("LojaAPI.Dominio.Produtos.Produto", b =>

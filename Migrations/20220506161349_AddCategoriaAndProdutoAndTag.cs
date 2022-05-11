@@ -53,7 +53,7 @@ namespace LojaAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "Tags",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -63,9 +63,9 @@ namespace LojaAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tag_Produtos_ProdutoId",
+                        name: "FK_Tags_Produtos_ProdutoId",
                         column: x => x.ProdutoId,
                         principalTable: "Produtos",
                         principalColumn: "Id");
@@ -77,15 +77,15 @@ namespace LojaAPI.Migrations
                 column: "CategoriaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tag_ProdutoId",
-                table: "Tag",
+                name: "IX_Tags_ProdutoId",
+                table: "Tags",
                 column: "ProdutoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Produtos");
