@@ -1,10 +1,12 @@
 ﻿using Flunt.Notifications;
 using LojaAPI.Dominio.Produtos;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LojaAPI.Infra.Database; //namespace: organiza programa em módulos
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
@@ -12,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
     }
     protected override void OnModelCreating(ModelBuilder builder) {
+        base.OnModelCreating(builder); //invocando a classe pai (Identity)
         builder.Ignore<Notification>(); //não salvar dados da entidade notification do flunt
         builder.Entity<Produto>().Property(p => p.Nome).IsRequired();
         builder.Entity<Produto>().Property(p => p.Descricao).HasMaxLength(255); //adicionando exceção para convenção abaixo, nesse caso descricaõ terá 255 caracteres
