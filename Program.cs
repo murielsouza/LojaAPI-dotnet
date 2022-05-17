@@ -14,6 +14,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //diminuin
     options.Password.RequireLowercase = false;
     options.Password.RequiredLength = 3;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddScoped<QueryAllUsersWithClaims>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
