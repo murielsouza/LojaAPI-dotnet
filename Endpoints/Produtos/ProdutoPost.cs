@@ -1,5 +1,6 @@
 ﻿using LojaAPI.Dominio.Produtos;
 using LojaAPI.Infra.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LojaAPI.Endpoints.Produtos;
 
@@ -9,6 +10,7 @@ public class ProdutoPost
     public static string [] Methods => new string [] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
+    [Authorize(Policy = "SomenteFuncionario")]
     public static IResult Action(ProdutoRequest produtoRequest, ApplicationDbContext context) {
         var categoria = context.Categorias.Where(c => c.Id == produtoRequest.CategoriaId).FirstOrDefault();
         if (categoria == null) {
