@@ -1,7 +1,9 @@
 ﻿using LojaAPI.Infra.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LojaAPI.Endpoints.Funcionarios;
 
+[Authorize(Policy = "SomenteFuncionario")]
 public class FuncionarioGetAll
 {
     public static string Template => "/funcionarios"; 
