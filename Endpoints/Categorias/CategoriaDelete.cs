@@ -5,7 +5,7 @@ namespace LojaAPI.Endpoints.Categorias;
 
 public class CategoriaDelete
 {
-    public static string Template => "/categorias/{id:guid}";
+    public static string Template => "/categoria/{id:guid}";
     public static string [] Methods => new string [] { HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
 

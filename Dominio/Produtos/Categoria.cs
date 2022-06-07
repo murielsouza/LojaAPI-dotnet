@@ -16,9 +16,11 @@ public class Categoria : Entidade
 
         Validate();
     }
-    public void EditarCategoria(string nome, bool ativo) {
+    public void EditarCategoria(string nome, bool ativo, string editadoPor) {
         Ativo = ativo;
         Nome = nome;
+        EditadoPor = editadoPor;
+        EditadoEm = DateTime.Now;
         Validate();
     }
     private void Validate()
