@@ -11,10 +11,10 @@ public class FuncionarioPost //convenção: recurso  + metodo de acesso para cad
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "SomenteFuncionario")]
-    public static IResult Action(FuncionarioRequest funcionarioRequest, HttpContext http,UserManager<IdentityUser> userManager) {
+    public static async Task<IResult> Action(FuncionarioRequest funcionarioRequest, HttpContext http,UserManager<IdentityUser> userManager) {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var newUser = new IdentityUser { UserName = funcionarioRequest.Email, Email = funcionarioRequest.Email};
-       var result = userManager.CreateAsync(newUser, funcionarioRequest.Senha).Result; //senha passa por aqui
+       var result = await userManager.CreateAsync(newUser, funcionarioRequest.Senha);
         if (!result.Succeeded) {
             return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
         }
@@ -23,7 +23,7 @@ public class FuncionarioPost //convenção: recurso  + metodo de acesso para cad
             new Claim("Nome", funcionarioRequest.Nome),
             new Claim("CriadoPor", userId)
         };
-        var claimsResult = userManager.AddClaimsAsync(newUser, userClaims).Result; //Add varias claims ao mesmo tempo
+        var claimsResult = await userManager.AddClaimsAsync(newUser, userClaims);
         if (!claimsResult.Succeeded) {
             return Results.ValidationProblem(claimsResult.Errors.ConvertToProblemDetails());
         }
