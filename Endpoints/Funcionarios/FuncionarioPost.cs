@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-
-namespace LojaAPI.Endpoints.Funcionarios;
+﻿namespace LojaAPI.Endpoints.Funcionarios;
 
 public class FuncionarioPost //convenção: recurso  + metodo de acesso para cadastrar categoria
 {

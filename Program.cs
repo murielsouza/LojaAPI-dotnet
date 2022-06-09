@@ -1,15 +1,3 @@
-using LojaAPI.Endpoints.Categorias;
-using LojaAPI.Endpoints.Funcionarios;
-using LojaAPI.Endpoints.Produtos;
-using LojaAPI.Endpoints.Segurança;
-using LojaAPI.Infra.Database;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //diminuindo a segurança da senha

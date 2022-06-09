@@ -1,6 +1,4 @@
-﻿using LojaAPI.Infra.Database;
-
-namespace LojaAPI.Endpoints.Produtos;
+﻿namespace LojaAPI.Endpoints.Produtos;
 
 public class ProdutoGetAll
 {

@@ -1,9 +1,4 @@
-﻿using LojaAPI.Dominio.Produtos;
-using LojaAPI.Infra.Database;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-
-namespace LojaAPI.Endpoints.Categorias;
+﻿namespace LojaAPI.Endpoints.Categorias;
 
 public class CategoriaPost //convenção: recurso  + metodo de acesso para cadastrar categoria
 {

@@ -1,8 +1,4 @@
-﻿using Dapper;
-using LojaAPI.Endpoints.Funcionarios;
-using Microsoft.Data.SqlClient;
-
-namespace LojaAPI.Infra.Database;
+﻿namespace LojaAPI.Infra.Database;
 
 public class QueryAllUsersWithClaims
 {

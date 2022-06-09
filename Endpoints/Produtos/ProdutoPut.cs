@@ -1,8 +1,4 @@
-﻿using LojaAPI.Dominio.Produtos;
-using LojaAPI.Infra.Database;
-using Microsoft.AspNetCore.Mvc;
-
-namespace LojaAPI.Endpoints.Produtos;
+﻿namespace LojaAPI.Endpoints.Produtos;
 
 public class ProdutoPut
 {

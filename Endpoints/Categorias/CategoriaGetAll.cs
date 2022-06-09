@@ -1,6 +1,4 @@
-﻿using LojaAPI.Infra.Database;
-
-namespace LojaAPI.Endpoints.Categorias;
+﻿namespace LojaAPI.Endpoints.Categorias;
 
 public class CategoriaGetAll
 {

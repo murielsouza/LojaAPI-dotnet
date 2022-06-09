@@ -1,10 +1,4 @@
-﻿using Flunt.Notifications;
-using LojaAPI.Dominio.Produtos;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace LojaAPI.Infra.Database; //namespace: organiza programa em módulos
+﻿namespace LojaAPI.Infra.Database; //namespace: organiza programa em módulos
 
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {

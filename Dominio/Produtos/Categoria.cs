@@ -1,6 +1,4 @@
-﻿using Flunt.Validations;
-
-namespace LojaAPI.Dominio.Produtos;
+﻿namespace LojaAPI.Dominio.Produtos;
 
 public class Categoria : Entidade
 {

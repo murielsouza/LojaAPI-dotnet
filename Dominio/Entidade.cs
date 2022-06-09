@@ -1,6 +1,4 @@
-﻿using Flunt.Notifications;
-
-namespace LojaAPI.Dominio;
+﻿namespace LojaAPI.Dominio;
 
 public abstract class Entidade : Notifiable<Notification> //Flunt para validação
 {

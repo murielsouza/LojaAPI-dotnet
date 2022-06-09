@@ -1,6 +1,4 @@
-﻿using LojaAPI.Dominio.Produtos;
-
-namespace LojaAPI.Endpoints.Produtos;
+﻿namespace LojaAPI.Endpoints.Produtos;
 public class ProdutoResponse
 {
     public Guid Id { get; set; }

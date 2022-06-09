@@ -1,8 +1,4 @@
-﻿using LojaAPI.Dominio.Produtos;
-using LojaAPI.Infra.Database;
-using Microsoft.AspNetCore.Authorization;
-
-namespace LojaAPI.Endpoints.Produtos;
+﻿namespace LojaAPI.Endpoints.Produtos;
 
 public class ProdutoPost
 {

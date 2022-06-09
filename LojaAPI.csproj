@@ -7,6 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="Microsoft.Data.SqlClient"/>
+    <Using Include="Microsoft.EntityFrameworkCore"/>
+    <Using Include="Microsoft.AspNetCore.Identity"/>
+    <Using Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
+    <Using Include="Microsoft.AspNetCore.Mvc"/>
+    <Using Include="Microsoft.AspNetCore.Authorization"/>
+    <Using Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
+    <Using Include="Microsoft.IdentityModel.Tokens;"/>
+    <Using Include="System.IdentityModel.Tokens.Jwt"/>
+    <Using Include="System.Security.Claims"/>
+    <Using Include="System.Text"/>
+    <Using Include="Flunt.Notifications"/>
+    <Using Include="Flunt.Validations"/>
+    <Using Include="Dapper"/>
+
+    <Using Include="LojaAPI.Infra.Database"/>
+    <Using Include="LojaAPI.Dominio.Produtos"/>
+    <Using Include="LojaAPI.Endpoints.Funcionarios"/>
+    <Using Include="LojaAPI.Endpoints.Segurança"/>
+    <Using Include="LojaAPI.Endpoints.Produtos"/>
+    <Using Include="LojaAPI.Endpoints.Categorias"/>
+ 
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Flunt" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />

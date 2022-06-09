@@ -1,8 +1,4 @@
-﻿using LojaAPI.Infra.Database;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
-namespace LojaAPI.Endpoints.Categorias;
+﻿namespace LojaAPI.Endpoints.Categorias;
 
 public class CategoriaPut
 {
@@ -10,7 +6,7 @@ public class CategoriaPut
     public static string [] Methods => new string [] { HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action([FromRoute] Guid Id, HttpContext http, CategoriaRequest categoriaRequest, ApplicationDbContext context)
+    public static async Task<IResult> Action([FromRoute] Guid Id, HttpContext http, CategoriaRequest categoriaRequest, ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var categoria = context.Categorias.Where(c => c.Id == Id).FirstOrDefault();
@@ -22,7 +18,7 @@ public class CategoriaPut
         if (!categoria.IsValid) {
             return Results.ValidationProblem(categoria.Notifications.ConvertToProblemDetails());
         }
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return Results.Ok();
     }
 }
