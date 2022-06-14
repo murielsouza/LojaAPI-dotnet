@@ -1,4 +1,20 @@
+using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseSerilog((context, configuration) =>
+{
+    configuration
+    .WriteTo.Console()
+    .WriteTo.MSSqlServer(
+        context.Configuration["ConnectionStrings:DefaultConnection"],
+        sinkOptions: new MSSqlServerSinkOptions()
+        {
+            AutoCreateSqlTable = true,
+            TableName = "LogAPI"
+        });
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //diminuindo a segurança da senha
     options.Password.RequireNonAlphanumeric = false;
@@ -64,4 +80,18 @@ app.MapMethods(FuncionarioPost.Template, FuncionarioPost.Methods, FuncionarioPos
 app.MapMethods(FuncionarioGetAll.Template, FuncionarioGetAll.Methods, FuncionarioGetAll.Handle);
 
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
+
+app.UseExceptionHandler("/error");
+app.Map("/error", (HttpContext http) => {
+    var error = http.Features?.Get<IExceptionHandlerFeature>()?.Error;
+    if (error != null) 
+    {
+        if(error is SqlException)
+        {
+            return Results.Problem("Banco de dados offline", statusCode: 500);
+        }
+    }
+    return Results.Problem("Um erro ocorreu", statusCode: 500);
+});
+
 app.Run();
