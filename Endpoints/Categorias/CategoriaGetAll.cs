@@ -6,9 +6,9 @@ public class CategoriaGetAll
     public static string [] Methods => new string [] { HttpMethod.Get.ToString() }; //forma de acesso somente método get
     public static Delegate Handle => Action;
 
-    public static IResult Action(ApplicationDbContext context) {
-        var categorias = context.Categorias.ToList();
-        var response = categorias.Select(c => new CategoriaResponse { Id = c.Id, Nome = c.Nome, Ativo = c.Ativo });
+    public static async Task<IResult> Action(ApplicationDbContext context) {
+        var categorias = await context.Categorias.AsNoTracking().ToListAsync();
+        var response = categorias.Select(c => new CategoriaResponse(c.Id, c.Nome, c.Ativo));
         return Results.Ok(response);
     }
 }

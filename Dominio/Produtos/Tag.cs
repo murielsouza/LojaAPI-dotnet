@@ -2,6 +2,12 @@
 
 public class Tag
 {
-    public int Id { get; set; }
-    public string Nome { get; set; }
+    public int Id { get; private set; }
+    public string Nome { get; private set; }
+    public Guid ProdutoId { get; private set; }
+    
+    public Tag(string nome)
+    {
+        Nome = nome;
+    }
 }

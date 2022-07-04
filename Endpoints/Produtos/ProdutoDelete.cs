@@ -2,19 +2,27 @@
 
 public class ProdutoDelete
 {
-    public static string Template => "/produtos/{id:guid}";
-    public static string[] Methods => new string[] { HttpMethod.Delete.ToString() };
+    public static string Template => "/produto/{id:guid}";
+    public static string [] Methods => new string[] { HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action([FromRoute] Guid Id, ApplicationDbContext context)
+    public static async Task<IResult> Action([FromRoute] Guid Id, ApplicationDbContext context)
     {
-        var produto = context.Produtos.Where(p => p.Id == Id).FirstOrDefault();
+        var produto = await context.Produtos.Where(p => p.Id == Id).FirstOrDefaultAsync();
+        var tags = await context.Tags.ToListAsync();
         if (produto == null)
         {
             return Results.NotFound("Produto não existe no Banco de Dados");
         }
+        foreach (var t in tags)
+        {
+            if (t.ProdutoId == produto.Id)
+            {
+                context.Tags.Remove(t);
+            }
+        }
         context.Produtos.Remove(produto);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return Results.Ok();
     }
 }

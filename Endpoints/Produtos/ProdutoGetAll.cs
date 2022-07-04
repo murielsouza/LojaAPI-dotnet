@@ -6,10 +6,11 @@ public class ProdutoGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action(ApplicationDbContext context)
+    [Authorize(Policy = "SomenteFuncionario")]
+    public static async Task<IResult> Action(ApplicationDbContext context)
     {
-        var produtos = context.Produtos.ToList();
-        var response = produtos.Select(p => new ProdutoResponse { Id = p.Id, CategoriaId = p.CategoriaId ,Nome = p.Nome, Descricao = p.Descricao, Tags = p.Tags, TemEstoque = p.TemEstoque,Ativo = p.Ativo });
+        var produtos = await context.Produtos.AsNoTracking().Include(p => p.Categoria).Include(p => p.Tags).OrderBy(p => p.Nome).ToListAsync();
+        var response = produtos.Select(p => new ProdutoResponse(p.Id, p.Nome, p.Categoria.Nome, p.Descricao, p.Preco, p.Tags, p.TemEstoque, p.Ativo));
         return Results.Ok(response);
     }
 }

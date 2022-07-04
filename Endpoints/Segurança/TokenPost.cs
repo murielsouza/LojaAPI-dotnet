@@ -7,8 +7,15 @@ public class TokenPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static IResult Action(LoginRequest loginRequest, IConfiguration configuration,UserManager<IdentityUser> userManager, ILogger<TokenPost> log) {
+    public static IResult Action(
+        LoginRequest loginRequest, 
+        IConfiguration configuration,
+        UserManager<IdentityUser> userManager, 
+        ILogger<TokenPost> log, 
+        IWebHostEnvironment environment) {
+        
         log.LogInformation("Obtendo Token às " + DateTime.UtcNow);
+        
         var user = userManager.FindByEmailAsync(loginRequest.Email).Result;
         if (user == null){
             Results.BadRequest("Usuário não encontrado!");
@@ -32,7 +39,8 @@ public class TokenPost
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature), //assinar credenciais
             Audience = configuration["JwtBearerTokenSettings:Audience"],
             Issuer = configuration["JwtBearerTokenSettings:Issuer"],
-            Expires = DateTime.UtcNow.AddMinutes(60)
+            Expires = environment.IsDevelopment() || environment.IsStaging() ?
+                DateTime.UtcNow.AddYears(1) : DateTime.UtcNow.AddMinutes(10),
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescription);

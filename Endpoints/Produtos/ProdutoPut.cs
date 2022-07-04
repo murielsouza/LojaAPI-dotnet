@@ -2,51 +2,38 @@
 
 public class ProdutoPut
 {
-    public static string Template => "/produtos/{id:guid}";
-    public static string [] Methods => new string [] { HttpMethod.Put.ToString() };
+    public static string Template => "/produto/{id:guid}";
+    public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action([FromRoute] Guid Id, ProdutoRequest produtoRequest, ApplicationDbContext context)
+    public static async Task<IResult> Action([FromRoute] Guid Id, ProdutoRequest produtoRequest, HttpContext http, ApplicationDbContext context)
     {
-        var categoria = context.Categorias.Where(c => c.Id == produtoRequest.CategoriaId).FirstOrDefault();
-        if (categoria == null)
-        {
-            return Results.NotFound("Categoria não existe no Banco de Dados");
-        }
-        var tags = context.Tags.ToList();
-        var produto = context.Produtos.Where(p => p.Id == Id).FirstOrDefault();
+        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var categoria = await context.Categorias.Where(c => c.Id == produtoRequest.CategoriaId).FirstOrDefaultAsync();
+        var tags = await context.Tags.ToListAsync();
+        var atualizaListaTags = new List<Tag>();
+        var produto = await context.Produtos.Where(p => p.Id == Id).FirstOrDefaultAsync();
         if (produto == null)
         {
             return Results.NotFound("Produto não existe no Banco de Dados");
         }
-        produto.EditarProduto(produtoRequest.Nome, produtoRequest.Descricao, produtoRequest.TemEstoque, produtoRequest.Ativo);
-        produto.Categoria = categoria;
-        if (produtoRequest.Tags != null)
+        foreach (var t in tags)
         {
-            produto.Tags = new List<Tag>();
-            foreach (var item in produtoRequest.Tags)
+            if (t.ProdutoId == produto.Id)
             {
-                var ver = true;
-                foreach (var t in tags)
-                {
-                    if (t.Nome == item)
-                    {
-                        produto.Tags.Add(t);
-                        ver = false;
-                        break;
-                    }
-                }
-                if (ver)
-                {
-                    produto.Tags.Add(new Tag { Nome = item });
-                }
+                context.Tags.Remove(t);
             }
         }
+        foreach (var t in produtoRequest.Tags)
+        {
+            atualizaListaTags.Add(new Tag(t));
+        }
+        produto.EditarProduto(produtoRequest.Nome, categoria, atualizaListaTags, produtoRequest.Descricao, produtoRequest.Preco, produtoRequest.TemEstoque, produtoRequest.Ativo, userId);
         if (!produto.IsValid)
         {
             return Results.ValidationProblem(produto.Notifications.ConvertToProblemDetails());
         }
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return Results.Ok();
     }
 }

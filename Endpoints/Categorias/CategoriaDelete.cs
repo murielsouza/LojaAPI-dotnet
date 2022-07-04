@@ -8,7 +8,7 @@ public class CategoriaDelete
 
     public static async Task<IResult> Action([FromRoute] Guid Id, ApplicationDbContext context)
     {
-        var categoria = context.Categorias.Where(c => c.Id == Id).FirstOrDefault();
+        var categoria = await context.Categorias.Where(c => c.Id == Id).FirstOrDefaultAsync();
         if (categoria == null)
         {
             return Results.NotFound("Categoria não existe no Banco de Dados");

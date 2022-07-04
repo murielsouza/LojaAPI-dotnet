@@ -73,6 +73,7 @@ app.MapMethods(CategoriaDelete.Template, CategoriaDelete.Methods, CategoriaDelet
 
 app.MapMethods(ProdutoPost.Template, ProdutoPost.Methods, ProdutoPost.Handle);
 app.MapMethods(ProdutoGetAll.Template, ProdutoGetAll.Methods, ProdutoGetAll.Handle);
+app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Methods, ProdutoGetVitrine.Handle);
 app.MapMethods(ProdutoPut.Template, ProdutoPut.Methods, ProdutoPut.Handle);
 app.MapMethods(ProdutoDelete.Template, ProdutoDelete.Methods, ProdutoDelete.Handle);
 
@@ -89,6 +90,10 @@ app.Map("/error", (HttpContext http) => {
         if(error is SqlException)
         {
             return Results.Problem("Banco de dados offline", statusCode: 500);
+        }
+        else if(error is BadHttpRequestException)
+        {
+            return Results.Problem("Erro de conversão de tipo. Verifique todas as informações enviadas", statusCode: 500);
         }
     }
     return Results.Problem("Um erro ocorreu", statusCode: 500);
