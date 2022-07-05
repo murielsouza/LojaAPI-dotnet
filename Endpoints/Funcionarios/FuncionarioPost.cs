@@ -7,24 +7,19 @@ public class FuncionarioPost //convenção: recurso  + metodo de acesso para cad
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "SomenteFuncionario")]
-    public static async Task<IResult> Action(FuncionarioRequest funcionarioRequest, HttpContext http,UserManager<IdentityUser> userManager) {
+    public static async Task<IResult> Action(FuncionarioRequest funcionarioRequest, HttpContext http, UsuarioCreator usuarioCreator) {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var newUser = new IdentityUser { UserName = funcionarioRequest.Email, Email = funcionarioRequest.Email};
-       var result = await userManager.CreateAsync(newUser, funcionarioRequest.Senha);
-        if (!result.Succeeded) {
-            return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
-        }
         var userClaims = new List<Claim> {
             new Claim("CodigoFuncionario", funcionarioRequest.funcionarioCodigo),
             new Claim("Nome", funcionarioRequest.Nome),
             new Claim("CriadoPor", userId)
         };
-        var claimsResult = await userManager.AddClaimsAsync(newUser, userClaims);
-        if (!claimsResult.Succeeded) {
-            return Results.ValidationProblem(claimsResult.Errors.ConvertToProblemDetails());
+        (IdentityResult identity, string userId) result =
+            await usuarioCreator.Create(funcionarioRequest.Email, funcionarioRequest.Senha, userClaims);
+        if (!result.identity.Succeeded)
+        {
+            return Results.ValidationProblem(result.identity.Errors.ConvertToProblemDetails());
         }
-       // claimResult = userManager.AddClaimAsync(user, new Claim("Nome", funcionarioRequest.Nome)).Result; //Add atributo especifico de funcionário
-
-        return Results.Created($"/funcionarios/{newUser.Id}", newUser.Id);
+        return Results.Created($"/funcionarios/{result.userId}", result.userId);
     }
 }

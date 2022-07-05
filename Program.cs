@@ -8,7 +8,7 @@ builder.WebHost.UseSerilog((context, configuration) =>
     configuration
     .WriteTo.Console()
     .WriteTo.MSSqlServer(
-        context.Configuration["ConnectionStrings:DefaultConnection"],
+        context.Configuration.GetConnectionString("DefaultConnection"),
         sinkOptions: new MSSqlServerSinkOptions()
         {
             AutoCreateSqlTable = true,
@@ -49,6 +49,7 @@ builder.Services.AddAuthentication(x => {
     };
 });
 builder.Services.AddScoped<QueryAllUsersWithClaims>();
+builder.Services.AddScoped<UsuarioCreator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -81,6 +82,9 @@ app.MapMethods(FuncionarioPost.Template, FuncionarioPost.Methods, FuncionarioPos
 app.MapMethods(FuncionarioGetAll.Template, FuncionarioGetAll.Methods, FuncionarioGetAll.Handle);
 
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
+
+app.MapMethods(ClientePost.Template, ClientePost.Methods, ClientePost.Handle);
+app.MapMethods(ClienteGet.Template, ClienteGet.Methods, ClienteGet.Handle);
 
 app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext http) => {

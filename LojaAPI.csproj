@@ -24,10 +24,12 @@
 
     <Using Include="LojaAPI.Infra.Database" />
     <Using Include="LojaAPI.Dominio.Produtos" />
+    <Using Include="LojaAPI.Dominio.Usuarios" />
     <Using Include="LojaAPI.Endpoints.Funcionarios" />
     <Using Include="LojaAPI.Endpoints.Segurança" />
     <Using Include="LojaAPI.Endpoints.Produtos" />
     <Using Include="LojaAPI.Endpoints.Categorias" />
+    <Using Include="LojaAPI.Endpoints.Clientes" />
  
   </ItemGroup>
   
