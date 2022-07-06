@@ -2,7 +2,8 @@
 
 public class Categoria : Entidade
 {
-    public bool Ativo { get; private set; }  //editar somente de dentro da classe (private set)
+    public string Nome { get; private set; }
+    public bool Ativo { get; private set; } 
     public Categoria(string nome, string criadoPor, string editadoPor)
     {
         Nome = nome;

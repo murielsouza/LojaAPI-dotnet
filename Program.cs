@@ -1,3 +1,4 @@
+using LojaAPI.Endpoints.Pedidos;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
@@ -30,6 +31,8 @@ builder.Services.AddAuthorization(options => { //por padrão o usuário precisa es
     .Build();
     options.AddPolicy("SomenteFuncionario", p =>
         p.RequireAuthenticatedUser().RequireClaim("CodigoFuncionario"));
+    options.AddPolicy("CpfRequisitado", p =>
+        p.RequireAuthenticatedUser().RequireClaim("Cpf"));
 });
 builder.Services.AddAuthentication(x => {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,7 +54,6 @@ builder.Services.AddAuthentication(x => {
 builder.Services.AddScoped<QueryAllUsersWithClaims>();
 builder.Services.AddScoped<UsuarioCreator>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 app.UseAuthentication();
@@ -60,8 +62,8 @@ app.UseAuthorization();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -85,6 +87,8 @@ app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 
 app.MapMethods(ClientePost.Template, ClientePost.Methods, ClientePost.Handle);
 app.MapMethods(ClienteGet.Template, ClienteGet.Methods, ClienteGet.Handle);
+
+app.MapMethods(PedidoPost.Template, PedidoPost.Methods, PedidoPost.Handle);
 
 app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext http) => {

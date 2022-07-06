@@ -2,13 +2,16 @@
 
 public class Produto : Entidade
 {
-    public Guid CategoriaId { get; private set; } // one to one
+    public string Nome { get; private set; }
+    public Guid CategoriaId { get; private set; }
     public Categoria Categoria { get; private set; }
     public string Descricao { get; private set; }
-    public List<Tag>? Tags { get; private set; } //one to many
+    public List<Tag>? Tags { get; private set; }
     public bool TemEstoque { get; private set; }
     public bool Ativo { get; private set; } = true;
     public decimal Preco { get; private set; }
+    public ICollection<Pedido> Pedidos { get; private set; } //sujei a classe Produto mas por uma boa causa, agr o ApplicationDbContext vai poder criar uma Tabela de Relacionamento PedidoxProdutos no Banco de Dados sem precisar criar uma classe(eg. PedidoProdutos.cs) para representar esse relacionamento
+
     private Produto() { }
     public Produto(string nome, Categoria categoria, List<Tag> tags, string descricao, decimal preco, bool temEstoque, string criadoPor, string editadoPor)
     {
