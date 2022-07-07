@@ -9,7 +9,7 @@ public class QueryAllUsersWithClaims
         this.configuration = configuration;
     }
     public async Task<IEnumerable<FuncionarioResponse>> Execute(int page, int rows) {
-        var db = new SqlConnection(configuration["ConnectionStrings:DefaultConnection"]);
+        var db = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
         var query = @"SELECT Email, ClaimValue as Nome FROM AspNetUsers u INNER JOIN AspNetUserClaims 
                     c on u.id = c.UserId and ClaimType = 'Nome' ORDER BY Nome 
                     OFFSET (@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";

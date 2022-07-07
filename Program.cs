@@ -52,6 +52,7 @@ builder.Services.AddAuthentication(x => {
     };
 });
 builder.Services.AddScoped<QueryAllUsersWithClaims>();
+builder.Services.AddScoped<QueryProductReport>();
 builder.Services.AddScoped<UsuarioCreator>();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -79,6 +80,7 @@ app.MapMethods(ProdutoGetAll.Template, ProdutoGetAll.Methods, ProdutoGetAll.Hand
 app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Methods, ProdutoGetVitrine.Handle);
 app.MapMethods(ProdutoPut.Template, ProdutoPut.Methods, ProdutoPut.Handle);
 app.MapMethods(ProdutoDelete.Template, ProdutoDelete.Methods, ProdutoDelete.Handle);
+app.MapMethods(RelatorioProdutos.Template, RelatorioProdutos.Methods, RelatorioProdutos.Handle);
 
 app.MapMethods(FuncionarioPost.Template, FuncionarioPost.Methods, FuncionarioPost.Handle);
 app.MapMethods(FuncionarioGetAll.Template, FuncionarioGetAll.Methods, FuncionarioGetAll.Handle);
@@ -89,6 +91,7 @@ app.MapMethods(ClientePost.Template, ClientePost.Methods, ClientePost.Handle);
 app.MapMethods(ClienteGet.Template, ClienteGet.Methods, ClienteGet.Handle);
 
 app.MapMethods(PedidoPost.Template, PedidoPost.Methods, PedidoPost.Handle);
+app.MapMethods(PedidoGet.Template, PedidoGet.Methods, PedidoGet.Handle);
 
 app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext http) => {
